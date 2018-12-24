@@ -1,0 +1,7 @@
+{
+	"files.associations": {
+		"*.sh": "shellscript",
+		"*.log": "log",
+		"main.h": "c"
+	}
+}

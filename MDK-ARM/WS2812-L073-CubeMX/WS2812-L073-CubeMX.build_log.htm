@@ -1,0 +1,97 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: ¦ÌVision V5.26.2.0
+Copyright (C) 2018 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: Cong Liu, XLDL, LIC=----
+ 
+Tool Versions:
+Toolchain:       MDK-Lite  Version: 5.26.2.0
+Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 6 (build 750)
+Assembler:       Armasm.exe V5.06 update 6 (build 750)
+Linker/Locator:  ArmLink.exe V5.06 update 6 (build 750)
+Library Manager: ArmAr.exe V5.06 update 6 (build 750)
+Hex Converter:   FromElf.exe V5.06 update 6 (build 750)
+CPU DLL:         SARMCM3.DLL V5.26.2.0
+Dialog DLL:      DARMCM1.DLL V1.19.1.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.5.0
+Dialog DLL:      TARMCM1.DLL V1.14.0.0
+ 
+<h2>Project:</h2>
+D:\workspace-MDK\WS2812-L073-CubeMX\MDK-ARM\WS2812-L073-CubeMX.uvprojx
+Project File Date:  12/22/2018
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
+Rebuild target 'WS2812-L073-CubeMX'
+assembling startup_stm32l073xx.s...
+compiling WS2812.c...
+compiling stm32l0xx_hal_tim_ex.c...
+compiling stm32l0xx_hal_tim.c...
+compiling stm32l0xx_it.c...
+../Src/stm32l0xx_it.c(163): warning:  #188-D: enumerated type mixed with another type
+  	SendEnable = ~SendEnable; 
+../Src/stm32l0xx_it.c: 1 warning, 0 errors
+compiling stm32l0xx_hal_msp.c...
+compiling main.c...
+../Src/main.c(125): warning:  #188-D: enumerated type mixed with another type
+    SendEnable = 0;
+../Src/main.c(130): warning:  #223-D: function "memset" declared implicitly
+  	memset(resetString,0x00,24*3*4);
+../Src/main.c(140): warning:  #188-D: enumerated type mixed with another type
+        SendEnable = ~SendEnable;
+../Src/main.c(143): warning:  #188-D: enumerated type mixed with another type
+          WS2812_FullColor(pWCMCU24_core, SendMode);
+../Src/main.c(148): warning:  #188-D: enumerated type mixed with another type
+          WS2812_HueSingle(pWCMCU24_core, SendMode % 8);
+../Src/main.c: 5 warnings, 0 errors
+compiling stm32l0xx_hal_uart.c...
+compiling stm32l0xx_hal_spi.c...
+compiling stm32l0xx_hal_i2c_ex.c...
+compiling stm32l0xx_hal_uart_ex.c...
+compiling stm32l0xx_hal.c...
+compiling stm32l0xx_hal_rcc.c...
+compiling stm32l0xx_hal_flash_ramfunc.c...
+compiling stm32l0xx_hal_rcc_ex.c...
+compiling stm32l0xx_hal_i2c.c...
+compiling stm32l0xx_hal_flash_ex.c...
+compiling stm32l0xx_hal_gpio.c...
+compiling stm32l0xx_hal_flash.c...
+compiling stm32l0xx_hal_dma.c...
+compiling stm32l0xx_hal_pwr.c...
+compiling stm32l0xx_hal_pwr_ex.c...
+compiling stm32l0xx_hal_cortex.c...
+compiling system_stm32l0xx.c...
+linking...
+Program Size: Code=8356 RO-data=260 RW-data=60 ZI-data=1852  
+FromELF: creating hex file...
+"WS2812-L073-CubeMX\WS2812-L073-CubeMX.axf" - 0 Error(s), 6 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.5.4.0.pack
+                ARM.CMSIS.5.4.0
+                CMSIS (Cortex Microcontroller Software Interface Standard)
+   * Component: CORE Version: 5.1.2
+
+Package Vendor: Keil
+                http://www.keil.com/pack/Keil.STM32L0xx_DFP.2.0.0.pack
+                Keil.STM32L0xx_DFP.2.0.0
+                STMicroelectronics STM32L0 Series Device Support, Drivers and Examples
+
+<h2>Collection of Component include folders:</h2>
+  .\RTE\_WS2812-L073-CubeMX
+  C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include
+  C:\Keil_v5\ARM\PACK\Keil\STM32L0xx_DFP\2.0.0\Drivers\CMSIS\Device\ST\STM32L0xx\Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:5.1.2
+Build Time Elapsed:  00:00:09
+</pre>
+</body>
+</html>
