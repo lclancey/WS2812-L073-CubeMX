@@ -65,30 +65,51 @@ void WS2812_DeInit(StructCore *pCore)
  * @param pCore 
  * @return uint32_t 
  */
-void WS2812_HueCircle(StructCore *pCore)
+void WS2812_HueCircle(StructCore *pCore, uint8_t pos)
 {
+	/// number of all beads
+	uint8_t n = pCore->n;
+
+	/// reset pos to a num in 0~n
+	pos %= n;
+
+	/// get first bead's position
 	StructBeadColor *pStr = pCore->beadColor;
 
-	for (int cc = 0; cc < 6; cc++)
+	/// create six original colors
+	for (int c1 = 0; c1 < 6; c1++)
 	{
-		/// create six original colors
-		memcpy(pStr + cc * 4, ColorValue + cc, sizeof(StructBeadColor));
+		memcpy(pStr + (pos + c1 * 4) % n, ColorValue + c1, sizeof(StructBeadColor));
+	}
 
-		/// insert one color in each two original colors ( 6 -> 12 )
-		uint8_t cn0 = cc * 4;
-		uint8_t cn100 = (cc * 4 + 4) % 24;
-		uint8_t cn50 = cn0 + 2;
+	/// insert one color in each two original colors ( 6 -> 12 )
+	/// and insert again ( 12 - >24 )
+	for (int c2 = 0; c2 < 6; c2++)
+	{
+		/// init original colors' location
+		uint8_t cn0 = (pos + c2 * 4) % 24;
+		uint8_t cn100 = (pos + c2 * 4 + 4) % 24;
+
+		/// position new colors' location
+		uint8_t cn50 = (cn0 + 2) % 24;
+		uint8_t cn25 = (cn0 + 1) % 24;
+		uint8_t cn75 = (cn0 + 3) % 24;
+
+		/// fuse original colors' into new colors
 		ColorFusion(pStr + cn0, pStr + cn100, pStr + cn50);
-
-		/// insert again ( 12 -> 24 )
-		uint8_t cn25 = cn0 + 1;
-		uint8_t cn75 = cn0 + 3;
 		ColorFusion(pStr + cn0, pStr + cn50, pStr + cn25);
 		ColorFusion(pStr + cn50, pStr + cn100, pStr + cn75);
 	}
 	Bead2Grain(pCore);
 	return;
 }
+
+/**
+ * @brief 
+ * 
+ * @param pCore 
+ * @param color 
+ */
 void WS2812_FullColor(StructCore *pCore, ColorCode color)
 {
 	if (color > 0x07)
@@ -101,6 +122,12 @@ void WS2812_FullColor(StructCore *pCore, ColorCode color)
 	return;
 }
 
+/**
+ * @brief 
+ * 
+ * @param pCore 
+ * @param color 
+ */
 void WS2812_HueSingle(StructCore *pCore, ColorCode color)
 {
 	if (color > 0x07)
@@ -117,9 +144,50 @@ void WS2812_HueSingle(StructCore *pCore, ColorCode color)
 	return;
 }
 
-void WS2812_ReBright(StructCore *pCore, uint8_t brightness)
+/**
+ * @brief 
+ * 
+ * @param pCore 
+ * @param brightness double value,should between 0~1 
+ */
+void WS2812_ReBright(StructCore *pCore, double brightness)
 {
+	if (brightness < 0 || brightness > 1)
+		return;
+	for (int i = 0; i < pCore->n; i++)
+	{
+		((pCore->beadColor) + i)->bead_G *= brightness;
+		((pCore->beadColor) + i)->bead_R *= brightness;
+		((pCore->beadColor) + i)->bead_B *= brightness;
+	}
+	Bead2Grain(pCore);
 	return;
+}
+
+/**
+ * @brief 
+ * 
+ * @param pCore 
+ * @param firstBead 
+ * @param gap 
+ */
+void WS2812_StaticGap(StructCore *pCore, StructBeadColor *firstBead, uint8_t gap)
+{
+	uint8_t g_plus = (firstBead->bead_G) ? gap : 0;
+	uint8_t r_plus = (firstBead->bead_R) ? gap : 0;
+	uint8_t b_plus = (firstBead->bead_B) ? gap : 0;
+	StructBeadColor tempBead = *firstBead;
+
+	/// create the rest beads
+	for (int i = 0; i < (pCore->n); i++)
+	{
+		(pCore->beadColor + i)->bead_G = ((firstBead->bead_G) + g_plus * i);
+		(pCore->beadColor + i)->bead_R = ((firstBead->bead_R) + r_plus * i);
+		(pCore->beadColor + i)->bead_B = ((firstBead->bead_B) + b_plus * i);
+	}
+
+	///
+	Bead2Grain(pCore);
 }
 //----------------------------middle layer function-------------------------------
 /**
@@ -129,41 +197,9 @@ void WS2812_ReBright(StructCore *pCore, uint8_t brightness)
  */
 void Bead2Grain(StructCore *pCore)
 {
-	uint8_t g, r, b;
-	memset(pCore->grainColor, 0, sizeof(StructGrainColor) * (pCore->n));
+	//memset(pCore->grainColor, 0, sizeof(StructGrainColor) * (pCore->n));
 	for (int i = 0; i < pCore->n; i++)
-	{
-		g = ((pCore->beadColor) + i)->bead_G;
-		r = ((pCore->beadColor) + i)->bead_R;
-		b = ((pCore->beadColor) + i)->bead_B;
-		for (int j = 0; j < 8; j++)
-		{
-			if ((g >> j) & 0x1)
-			{
-				(((pCore->grainColor) + i)->grain_G) |= (GRAIN_H << (j * 4));
-			}
-			else
-			{
-				(((pCore->grainColor) + i)->grain_G) |= (GRAIN_L << (j * 4));
-			}
-			if ((r >> j) & 0x1)
-			{
-				(((pCore->grainColor) + i)->grain_R) |= (GRAIN_H << (j * 4));
-			}
-			else
-			{
-				(((pCore->grainColor) + i)->grain_R) |= (GRAIN_L << (j * 4));
-			}
-			if ((b >> j) & 0x1)
-			{
-				(((pCore->grainColor) + i)->grain_B) |= (GRAIN_H << (j * 4));
-			}
-			else
-			{
-				(((pCore->grainColor) + i)->grain_B) |= (GRAIN_L << (j * 4));
-			}
-		}
-	}
+		Bead2GrainOfOne((pCore->beadColor) + i, (pCore->grainColor) + i);
 	return;
 }
 
@@ -175,27 +211,27 @@ void Bead2GrainOfOne(StructBeadColor *pB, StructGrainColor *pG)
 	{
 		if ((g >> i) & 0x1)
 		{
-			(pG->grain_G) |= (GRAIN_H << (i * 4));
+			(pG->grain_G) |= (GRAIN_H << ((7 - i) * 4));
 		}
 		else
 		{
-			(pG->grain_G) |= (GRAIN_L << (i * 4));
+			(pG->grain_G) |= (GRAIN_L << ((7 - i) * 4));
 		}
 		if ((r >> i) & 0x1)
 		{
-			(pG->grain_R) |= (GRAIN_H << (i * 4));
+			(pG->grain_R) |= (GRAIN_H << ((7 - i) * 4));
 		}
 		else
 		{
-			(pG->grain_R) |= (GRAIN_L << (i * 4));
+			(pG->grain_R) |= (GRAIN_L << ((7 - i) * 4));
 		}
 		if ((b >> i) & 0x1)
 		{
-			(pG->grain_B) |= (GRAIN_H << (i * 4));
+			(pG->grain_B) |= (GRAIN_H << ((7 - i) * 4));
 		}
 		else
 		{
-			(pG->grain_B) |= (GRAIN_L << (i * 4));
+			(pG->grain_B) |= (GRAIN_L << ((7 - i) * 4));
 		}
 	}
 }

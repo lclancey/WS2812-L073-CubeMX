@@ -69,15 +69,16 @@ static StructBeadColor ColorValue[] = {
 //----------------------------lib function-------------------------------
 StructCore *WS2812_Init(uint8_t BeadNum);
 void WS2812_DeInit(StructCore *pCore);
-void WS2812_HueCircle(StructCore *pCore);
+void WS2812_HueCircle(StructCore *pCore,uint8_t pos);
 void WS2812_FullColor(StructCore *pCore, ColorCode color);
 void WS2812_HueSingle(StructCore *pCore, ColorCode color);
-void WS2812_ReBright(StructCore *pCore,uint8_t brightness);
-void Bead2GrainOfOne(StructBeadColor *pB, StructGrainColor *pG);
+void WS2812_ReBright(StructCore *pCore, double brightness);
+void WS2812_StaticGap(StructCore *pCore, StructBeadColor *firstBead, uint8_t gap);
 
 //StructCore * WS2812_GetCoreData(void);
 
 //----------------------------middle layer function-------------------------------
 void Bead2Grain(StructCore *pCore);
+void Bead2GrainOfOne(StructBeadColor *pB, StructGrainColor *pG);
 void ColorFusion(StructBeadColor *color1, StructBeadColor *color2, StructBeadColor *colorMix);
 #endif

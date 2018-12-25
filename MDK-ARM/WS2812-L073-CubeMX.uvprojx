@@ -10,13 +10,12 @@
       <TargetName>WS2812-L073-CubeMX</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
-      <uAC6>0</uAC6>
+      <pCCUsed>5060422::V5.06 update 4 (build 422)::ARMCC</pCCUsed>
       <TargetOption>
         <TargetCommonOption>
           <Device>STM32L073RZTx</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32L0xx_DFP.2.0.0</PackID>
+          <PackID>Keil.STM32L0xx_DFP.1.6.0</PackID>
           <PackURL>http://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000-0x20004FFF) IROM(0x8000000-0x802FFFF) CLOCK(8000000) CPUTYPE("Cortex-M0+")</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -184,7 +183,6 @@
             <hadXRAM>0</hadXRAM>
             <uocXRam>0</uocXRam>
             <RvdsVP>0</RvdsVP>
-            <RvdsMve>0</RvdsMve>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -325,7 +323,6 @@
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>1</uC99>
-            <uGnu>0</uGnu>
             <useXO>0</useXO>
             <v6Lang>1</v6Lang>
             <v6LangP>1</v6LangP>
@@ -338,7 +335,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32L073xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;     ../Drivers/STM32L0xx_HAL_Driver/Inc;     ../Drivers/STM32L0xx_HAL_Driver/Inc/Legacy;     ../Drivers/CMSIS/Device/ST/STM32L0xx/Include;     ../Drivers/CMSIS/Include</IncludePath>
+              <IncludePath>../Inc;         ../Drivers/STM32L0xx_HAL_Driver/Inc;         ../Drivers/STM32L0xx_HAL_Driver/Inc/Legacy;         ../Drivers/CMSIS/Device/ST/STM32L0xx/Include;         ../Drivers/CMSIS/Include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
