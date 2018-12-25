@@ -1,13 +1,13 @@
 Dependencies for Project 'WS2812-L073-CubeMX', Target 'WS2812-L073-CubeMX': (DO NOT MODIFY !)
 F (startup_stm32l073xx.s)(0x5C1CB110)(--cpu Cortex-M0+ --pd "__EVAL SETA 1" -g --apcs=interwork -I.\RTE\_WS2812-L073-CubeMX-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32L0xx_DFP\2.0.0\Drivers\CMSIS\Device\ST\STM32L0xx\Include--pd "__UVISION_VERSION SETA 526" --pd "_RTE_ SETA 1" --pd "STM32L073xx SETA 1"--list startup_stm32l073xx.lst --xref -o ws2812-l073-cubemx\startup_stm32l073xx.o --depend ws2812-l073-cubemx\startup_stm32l073xx.d)
-F (..\Src\WS2812.c)(0x5C1DEA0F)(--c99 -c --cpu Cortex-M0+ -D__EVAL -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32L0xx_HAL_Driver/Inc -I ../Drivers/STM32L0xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32L0xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_WS2812-L073-CubeMX-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32L0xx_DFP\2.0.0\Drivers\CMSIS\Device\ST\STM32L0xx\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32L073xx -DUSE_HAL_DRIVER -DSTM32L073xx-o ws2812-l073-cubemx\ws2812.o --omf_browse ws2812-l073-cubemx\ws2812.crf --depend ws2812-l073-cubemx\ws2812.d)
-I (..\Src\WS2812.h)(0x5C1DD42B)
+F (..\Src\WS2812.c)(0x5C20C2C0)(--c99 -c --cpu Cortex-M0+ -D__EVAL -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32L0xx_HAL_Driver/Inc -I ../Drivers/STM32L0xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32L0xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_WS2812-L073-CubeMX-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32L0xx_DFP\2.0.0\Drivers\CMSIS\Device\ST\STM32L0xx\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32L073xx -DUSE_HAL_DRIVER -DSTM32L073xx-o ws2812-l073-cubemx\ws2812.o --omf_browse ws2812-l073-cubemx\ws2812.crf --depend ws2812-l073-cubemx\ws2812.d)
+I (..\Src\WS2812.h)(0x5C20C2B0)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5BD1A23C)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x599EDB3E)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x599EDB3C)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EDB3C)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599EDB3C)
-F (../Src/main.c)(0x5C1DE8B8)(--c99 -c --cpu Cortex-M0+ -D__EVAL -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32L0xx_HAL_Driver/Inc -I ../Drivers/STM32L0xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32L0xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_WS2812-L073-CubeMX-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32L0xx_DFP\2.0.0\Drivers\CMSIS\Device\ST\STM32L0xx\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32L073xx -DUSE_HAL_DRIVER -DSTM32L073xx-o ws2812-l073-cubemx\main.o --omf_browse ws2812-l073-cubemx\main.crf --depend ws2812-l073-cubemx\main.d)
+F (../Src/main.c)(0x5C20C330)(--c99 -c --cpu Cortex-M0+ -D__EVAL -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32L0xx_HAL_Driver/Inc -I ../Drivers/STM32L0xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32L0xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_WS2812-L073-CubeMX-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32L0xx_DFP\2.0.0\Drivers\CMSIS\Device\ST\STM32L0xx\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32L073xx -DUSE_HAL_DRIVER -DSTM32L073xx-o ws2812-l073-cubemx\main.o --omf_browse ws2812-l073-cubemx\main.crf --depend ws2812-l073-cubemx\main.d)
 I (../Inc/main.h)(0x5C1CB10D)
 I (../Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal.h)(0x5C18B6FB)
 I (../Inc/stm32l0xx_hal_conf.h)(0x5C1CB10D)
@@ -38,10 +38,10 @@ I (../Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_pwr_ex.h)(0x5C18B6FB)
 I (../Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_spi.h)(0x5C18B6FB)
 I (../Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_uart.h)(0x5C18B6FB)
 I (../Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_uart_ex.h)(0x5C18B6FB)
-I (../Src/WS2812.h)(0x5C1DD42B)
+I (../Src/WS2812.h)(0x5C20C2B0)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x599EDB3E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EDB3C)
-F (../Src/stm32l0xx_it.c)(0x5C1DDCBC)(--c99 -c --cpu Cortex-M0+ -D__EVAL -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32L0xx_HAL_Driver/Inc -I ../Drivers/STM32L0xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32L0xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_WS2812-L073-CubeMX-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32L0xx_DFP\2.0.0\Drivers\CMSIS\Device\ST\STM32L0xx\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32L073xx -DUSE_HAL_DRIVER -DSTM32L073xx-o ws2812-l073-cubemx\stm32l0xx_it.o --omf_browse ws2812-l073-cubemx\stm32l0xx_it.crf --depend ws2812-l073-cubemx\stm32l0xx_it.d)
+F (../Src/stm32l0xx_it.c)(0x5C20BE69)(--c99 -c --cpu Cortex-M0+ -D__EVAL -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32L0xx_HAL_Driver/Inc -I ../Drivers/STM32L0xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32L0xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_WS2812-L073-CubeMX-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32L0xx_DFP\2.0.0\Drivers\CMSIS\Device\ST\STM32L0xx\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32L073xx -DUSE_HAL_DRIVER -DSTM32L073xx-o ws2812-l073-cubemx\stm32l0xx_it.o --omf_browse ws2812-l073-cubemx\stm32l0xx_it.crf --depend ws2812-l073-cubemx\stm32l0xx_it.d)
 I (../Inc/main.h)(0x5C1CB10D)
 I (../Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal.h)(0x5C18B6FB)
 I (../Inc/stm32l0xx_hal_conf.h)(0x5C1CB10D)

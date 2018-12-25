@@ -40,6 +40,12 @@ typedef struct
 } StructCore;
 
 //----------------------------lib pre defines-------------------------------
+
+#define GRAIN_H ((uint32_t)0x7)
+#define GRAIN_L ((uint32_t)0x4)
+#define BEAD_LEN (3)
+#define GRAIN_LEN (12)
+
 typedef enum
 {
 	CC_Red,
@@ -51,28 +57,6 @@ typedef enum
 	CC_White,
 	CC_Black
 } ColorCode;
-
-#define GRAIN_H ((uint32_t)0xE)
-#define GRAIN_L ((uint32_t)0x8)
-#define BEAD_LEN (3)
-#define GRAIN_LEN (12)
-
-// static StructBeadColor CV_Red = {0x00, 0xFF, 0x00};
-// static StructBeadColor CV_Yellow = {0xFF, 0xFF, 0x00};
-// static StructBeadColor CV_Green = {0xFF, 0x00, 0x00};
-// static StructBeadColor CV_Cyan = {0xFF, 0x00, 0xFF};
-// static StructBeadColor CV_Blue = {0x00, 0x00, 0xFF};
-// static StructBeadColor CV_Purple = {0x00, 0xFF, 0xFF};
-// static StructBeadColor CV_White ={0xFF,0xFF,0xFF};
-// static StructBeadColor CV_Black = {0x00,0x00,0x00};
-static StructBeadColor CV_Red = {0x00, 0xFF, 0x00};
-static StructBeadColor CV_Yellow = {0xFF, 0xFF, 0x00};
-static StructBeadColor CV_Green = {0xFF, 0x00, 0x00};
-static StructBeadColor CV_Cyan = {0xFF, 0x00, 0xFF};
-static StructBeadColor CV_Blue = {0x00, 0x00, 0xFF};
-static StructBeadColor CV_Purple = {0x00, 0xFF, 0xFF};
-static StructBeadColor CV_White = {0xFF, 0xFF, 0xFF};
-static StructBeadColor CV_Black = {0x00, 0x00, 0x00};
 static StructBeadColor ColorValue[] = {
 	{0x00, 0xFF, 0x00},
 	{0xFF, 0xFF, 0x00},
@@ -83,12 +67,14 @@ static StructBeadColor ColorValue[] = {
 	{0xFF, 0xFF, 0xFF},
 	{0x00, 0x00, 0x00}};
 //----------------------------lib function-------------------------------
-StructCore *
-WS2812_Init(uint8_t BeadNum);
+StructCore *WS2812_Init(uint8_t BeadNum);
 void WS2812_DeInit(StructCore *pCore);
 void WS2812_HueCircle(StructCore *pCore);
 void WS2812_FullColor(StructCore *pCore, ColorCode color);
 void WS2812_HueSingle(StructCore *pCore, ColorCode color);
+void WS2812_ReBright(StructCore *pCore,uint8_t brightness);
+void Bead2GrainOfOne(StructBeadColor *pB, StructGrainColor *pG);
+
 //StructCore * WS2812_GetCoreData(void);
 
 //----------------------------middle layer function-------------------------------

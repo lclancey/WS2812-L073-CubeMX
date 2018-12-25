@@ -69,7 +69,7 @@ UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 uint8_t *pSPIGrain;
-FunctionalState SendEnable;
+uint8_t  SendEnable;
 uint32_t SendMode = 0;
 /* USER CODE END PV */
 
@@ -123,37 +123,48 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   SendEnable = 0;
-  HAL_Delay(3000);
+  HAL_Delay(300);
   /// -------------------------------------------------
 	uint8_t resetString[24*3*4];
 	//memset((void *)resetString,0x88,24*3*4);
 	memset(resetString,0x00,24*3*4);
-	HAL_SPI_Transmit(&hspi1,resetString,24*3*4,200);
+  HAL_SPI_Transmit(&hspi1,resetString,24*3*4,200);
 	
   StructCore *pWCMCU24_core = WS2812_Init(24);
   /// -------------light up-------------
+  
+  /// One Bead Test
+  StructBeadColor OneBead = {1,0,1};
+  StructGrainColor OneGrain ;
 
   while (1)
   {
     if (SendEnable)
-    { //do clear
+    { 
+      Bead2GrainOfOne(&OneBead,&OneGrain);
+      memcpy(resetString,&OneGrain,sizeof(StructGrainColor));
+	    HAL_SPI_Transmit(&hspi1,resetString,sizeof(StructGrainColor)+1,200);
+      OneBead.bead_G++;
+      OneBead.bead_B++;
       SendEnable = ~SendEnable;
-      if (SendMode < 0x8)
-      {
-        WS2812_FullColor(pWCMCU24_core, SendMode);
-      SendMode++;
-      }
-      else if (SendMode < 0x0F)
-      {
-        WS2812_HueSingle(pWCMCU24_core, SendMode % 8);
-            SendMode++;
-			}
-      else
-      {
-        WS2812_HueCircle(pWCMCU24_core);
-				SendMode=0;
-      }
-      HAL_SPI_Transmit(&hspi1, pWCMCU24_core->pData, pWCMCU24_core->dataLen, 200);
+
+      // SendEnable = ~SendEnable;
+      // if (SendMode < 0x8)
+      // {
+      //   WS2812_FullColor(pWCMCU24_core, SendMode);
+      // SendMode++;
+      // }
+      // else if (SendMode < 0x0F)
+      // {
+      //   WS2812_HueSingle(pWCMCU24_core, SendMode % 8);
+      //       SendMode++;
+			// }
+      // else
+      // {
+      //   WS2812_HueCircle(pWCMCU24_core);
+			// 	SendMode=0;
+      // }
+      // HAL_SPI_Transmit(&hspi1, pWCMCU24_core->pData, pWCMCU24_core->dataLen, 200);
 
       /* USER CODE END WHILE */
 

@@ -33,9 +33,9 @@ StructCore *WS2812_Init(uint8_t BeadNum)
 	StructCore *pRetCore = (StructCore *)calloc(1, sizeof(StructCore));
 	pRetCore->n = BeadNum;
 	pRetCore->beadColor = (StructBeadColor *)calloc(BeadNum, sizeof(StructBeadColor));
-	pRetCore->grainColor = (StructGrainColor *)calloc(BeadNum, sizeof(StructGrainColor));
+	pRetCore->grainColor = (StructGrainColor *)calloc(BeadNum + 1, sizeof(StructGrainColor));
 	pRetCore->pData = (uint8_t *)(pRetCore->grainColor);
-	pRetCore->dataLen = sizeof(StructGrainColor) * BeadNum;
+	pRetCore->dataLen = sizeof(StructGrainColor) * (BeadNum + 1);
 	return pRetCore;
 }
 /**
@@ -68,20 +68,21 @@ void WS2812_DeInit(StructCore *pCore)
 void WS2812_HueCircle(StructCore *pCore)
 {
 	StructBeadColor *pStr = pCore->beadColor;
-	memcpy(pStr + 0, &CV_Red, sizeof(StructBeadColor));
-	memcpy(pStr + 4, &CV_Yellow, sizeof(StructBeadColor));
-	memcpy(pStr + 8, &CV_Green, sizeof(StructBeadColor));
-	memcpy(pStr + 12, &CV_Cyan, sizeof(StructBeadColor));
-	memcpy(pStr + 16, &CV_Blue, sizeof(StructBeadColor));
-	memcpy(pStr + 20, &CV_Purple, sizeof(StructBeadColor));
-	for (int fi = 0; fi < 6; fi++)
+
+	for (int cc = 0; cc < 6; cc++)
 	{
-		uint8_t cn0 = fi * 4;
-		uint8_t cn100 = (fi * 4 + 4) % 24;
-		uint8_t cn25 = cn0 + 1;
+		/// create six original colors
+		memcpy(pStr + cc * 4, ColorValue + cc, sizeof(StructBeadColor));
+
+		/// insert one color in each two original colors ( 6 -> 12 )
+		uint8_t cn0 = cc * 4;
+		uint8_t cn100 = (cc * 4 + 4) % 24;
 		uint8_t cn50 = cn0 + 2;
-		uint8_t cn75 = cn0 + 3;
 		ColorFusion(pStr + cn0, pStr + cn100, pStr + cn50);
+
+		/// insert again ( 12 -> 24 )
+		uint8_t cn25 = cn0 + 1;
+		uint8_t cn75 = cn0 + 3;
 		ColorFusion(pStr + cn0, pStr + cn50, pStr + cn25);
 		ColorFusion(pStr + cn50, pStr + cn100, pStr + cn75);
 	}
@@ -95,7 +96,7 @@ void WS2812_FullColor(StructCore *pCore, ColorCode color)
 	StructBeadColor fullColor = ColorValue[color];
 	for (int i = 0; i < (pCore->n); i++)
 		//memcpy((pCore->beadColor+i), &fullColor, sizeof(fullColor));
-		*((pCore->beadColor)+i) = fullColor;
+		*((pCore->beadColor) + i) = fullColor;
 	Bead2Grain(pCore);
 	return;
 }
@@ -116,6 +117,10 @@ void WS2812_HueSingle(StructCore *pCore, ColorCode color)
 	return;
 }
 
+void WS2812_ReBright(StructCore *pCore, uint8_t brightness)
+{
+	return;
+}
 //----------------------------middle layer function-------------------------------
 /**
  * @brief Set pCore's beadvalue to grainvalue.
@@ -162,6 +167,38 @@ void Bead2Grain(StructCore *pCore)
 	return;
 }
 
+void Bead2GrainOfOne(StructBeadColor *pB, StructGrainColor *pG)
+{
+	uint8_t g = pB->bead_G, r = pB->bead_R, b = pB->bead_B;
+	memset(pG, 0, sizeof(StructGrainColor));
+	for (int i = 0; i < 8; i++)
+	{
+		if ((g >> i) & 0x1)
+		{
+			(pG->grain_G) |= (GRAIN_H << (i * 4));
+		}
+		else
+		{
+			(pG->grain_G) |= (GRAIN_L << (i * 4));
+		}
+		if ((r >> i) & 0x1)
+		{
+			(pG->grain_R) |= (GRAIN_H << (i * 4));
+		}
+		else
+		{
+			(pG->grain_R) |= (GRAIN_L << (i * 4));
+		}
+		if ((b >> i) & 0x1)
+		{
+			(pG->grain_B) |= (GRAIN_H << (i * 4));
+		}
+		else
+		{
+			(pG->grain_B) |= (GRAIN_L << (i * 4));
+		}
+	}
+}
 /**
  * @brief Mix two colors into one.
  * 
