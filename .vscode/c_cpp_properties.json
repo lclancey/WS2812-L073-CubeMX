@@ -4,13 +4,17 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "C:/Keil_v5/ARM/ARMCC/include/**"
+                "C:/Keil_v5/ARM/ARMCC/include/**",
+                "../Drivers/STM32L0xx_HAL_Driver/Inc/**",
+                "../Inc/**"
             ],
             "defines": [
                 "_DEBUG",
                 "UNICODE",
                 "_UNICODE",
-                "__CC_ARM"
+                "__CC_ARM",
+                "USE_HAL_DRIVER",
+                "STM32L073xx"
             ],
             "intelliSenseMode": "msvc-x64"
         }

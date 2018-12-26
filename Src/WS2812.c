@@ -70,16 +70,13 @@ void WS2812_HueCircle(StructCore *pCore, uint8_t pos)
 	/// number of all beads
 	uint8_t n = pCore->n;
 
-	/// reset pos to a num in 0~n
-	pos %= n;
-
 	/// get first bead's position
 	StructBeadColor *pStr = pCore->beadColor;
 
 	/// create six original colors
 	for (int c1 = 0; c1 < 6; c1++)
 	{
-		memcpy(pStr + (pos + c1 * 4) % n, ColorValue + c1, sizeof(StructBeadColor));
+		memcpy(pStr + (pos + c1 * 4) % n, ColorValue + CC_Red + c1, sizeof(StructBeadColor));
 	}
 
 	/// insert one color in each two original colors ( 6 -> 12 )
@@ -87,13 +84,13 @@ void WS2812_HueCircle(StructCore *pCore, uint8_t pos)
 	for (int c2 = 0; c2 < 6; c2++)
 	{
 		/// init original colors' location
-		uint8_t cn0 = (pos + c2 * 4) % 24;
-		uint8_t cn100 = (pos + c2 * 4 + 4) % 24;
+		uint8_t cn0 = (pos + c2 * 4) % n;
+		uint8_t cn100 = (pos + c2 * 4 + 4) % n;
 
 		/// position new colors' location
-		uint8_t cn50 = (cn0 + 2) % 24;
-		uint8_t cn25 = (cn0 + 1) % 24;
-		uint8_t cn75 = (cn0 + 3) % 24;
+		uint8_t cn50 = (cn0 + 2) % n;
+		uint8_t cn25 = (cn0 + 1) % n;
+		uint8_t cn75 = (cn0 + 3) % n;
 
 		/// fuse original colors' into new colors
 		ColorFusion(pStr + cn0, pStr + cn100, pStr + cn50);
@@ -112,11 +109,10 @@ void WS2812_HueCircle(StructCore *pCore, uint8_t pos)
  */
 void WS2812_FullColor(StructCore *pCore, ColorCode color)
 {
-	if (color > 0x07)
-		return;
+	color %= CC_MAX;
+	uint8_t n = pCore->n;
 	StructBeadColor fullColor = ColorValue[color];
-	for (int i = 0; i < (pCore->n); i++)
-		//memcpy((pCore->beadColor+i), &fullColor, sizeof(fullColor));
+	for (int i = 0; i < n; i++)
 		*((pCore->beadColor) + i) = fullColor;
 	Bead2Grain(pCore);
 	return;
@@ -128,17 +124,16 @@ void WS2812_FullColor(StructCore *pCore, ColorCode color)
  * @param pCore 
  * @param color 
  */
-void WS2812_HueSingle(StructCore *pCore, ColorCode color)
+void WS2812_HueSingle(StructCore *pCore, ColorCode color, uint8_t pos)
 {
-	if (color > 0x07)
-		return;
+	color %= CC_MAX;
+	uint8_t n = pCore->n;
 	StructBeadColor fullColor = ColorValue[color];
-	for (int i = 0; i < (pCore->n); i++)
+	for (int i = 0; i < n; i++)
 	{
-
-		((pCore->beadColor) + i)->bead_G = (fullColor.bead_G / (pCore->n)) * i;
-		((pCore->beadColor) + i)->bead_R = (fullColor.bead_R / (pCore->n)) * i;
-		((pCore->beadColor) + i)->bead_B = (fullColor.bead_B / (pCore->n)) * i;
+		((pCore->beadColor) + (i + pos) % n)->bead_G = (uint16_t)(fullColor.bead_G * i) / n;
+		((pCore->beadColor) + (i + pos) % n)->bead_R = (uint16_t)(fullColor.bead_R * i) / n;
+		((pCore->beadColor) + (i + pos) % n)->bead_B = (uint16_t)(fullColor.bead_B * i) / n;
 	}
 	Bead2Grain(pCore);
 	return;
@@ -152,9 +147,10 @@ void WS2812_HueSingle(StructCore *pCore, ColorCode color)
  */
 void WS2812_ReBright(StructCore *pCore, double brightness)
 {
+	uint8_t n = pCore->n;
 	if (brightness < 0 || brightness > 1)
 		return;
-	for (int i = 0; i < pCore->n; i++)
+	for (int i = 0; i < n; i++)
 	{
 		((pCore->beadColor) + i)->bead_G *= brightness;
 		((pCore->beadColor) + i)->bead_R *= brightness;
@@ -176,7 +172,6 @@ void WS2812_StaticGap(StructCore *pCore, StructBeadColor *firstBead, uint8_t gap
 	uint8_t g_plus = (firstBead->bead_G) ? gap : 0;
 	uint8_t r_plus = (firstBead->bead_R) ? gap : 0;
 	uint8_t b_plus = (firstBead->bead_B) ? gap : 0;
-	StructBeadColor tempBead = *firstBead;
 
 	/// create the rest beads
 	for (int i = 0; i < (pCore->n); i++)

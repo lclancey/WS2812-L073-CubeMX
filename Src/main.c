@@ -71,8 +71,9 @@ UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 uint8_t *pSPIGrain;
-uint8_t SendEnable;
-uint32_t SendMode = 0;
+uint8_t SendEnable = 0;
+uint8_t SendMode = 0;
+uint8_t SendCount = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -126,35 +127,27 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  SendEnable = 0;
-  HAL_Delay(300);
-  /// -------------------------------------------------
-  uint8_t resetString[24 * 3 * 4];
-  //memset((void *)resetString,0x88,24*3*4);
-  memset(resetString, 0x00, 24 * 3 * 4);
-  HAL_SPI_Transmit(&hspi1, resetString, 24 * 3 * 4, 200);
-
   StructCore *pWCMCU24_core = WS2812_Init(24);
-  /// -------------light up-------------
-
-  /// One Bead Test
-  StructBeadColor OneBead = {1, 0, 1};
-  StructGrainColor OneGrain;
-	HAL_TIM_Base_Start_IT(&htim2);
+  HAL_TIM_Base_Start_IT(&htim2);
   while (1)
   {
     if (SendEnable)
     {
-		
-      WS2812_HueCircle(pWCMCU24_core, SendMode);
-
-      //WS2812_ReBright(pWCMCU24_core, 0.5);
+      
+      if (SendMode % CC_MAX)
+        //Switch to one of the seven pre-defined colors(except the CC_Black)
+        //then hue single color
+        WS2812_HueSingle(pWCMCU24_core, (ColorCode)(SendMode % CC_MAX), SendCount);
+      else
+        //Switch to the first color (CC_Black)
+        //then hue full color
+        WS2812_HueCircle(pWCMCU24_core, SendCount);
+      
       HAL_SPI_Transmit(&hspi1, pWCMCU24_core->pData, pWCMCU24_core->dataLen, 200);
-    /* USER CODE END WHILE */
+      /* USER CODE END WHILE */
 
-    /* USER CODE BEGIN 3 */
-      SendMode++;
-      SendEnable = ~SendEnable;
+      /* USER CODE BEGIN 3 */
+      SendEnable = 0;
     }
   }
   /* USER CODE END 3 */
@@ -188,8 +181,7 @@ void SystemClock_Config(void)
   }
   /**Initializes the CPU, AHB and APB busses clocks 
   */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
@@ -242,7 +234,6 @@ static void MX_SPI1_Init(void)
   /* USER CODE BEGIN SPI1_Init 2 */
 
   /* USER CODE END SPI1_Init 2 */
-
 }
 
 /**
@@ -264,9 +255,9 @@ static void MX_TIM2_Init(void)
 
   /* USER CODE END TIM2_Init 1 */
   htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 1000-1;
+  htim2.Init.Prescaler = 1000 - 1;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 640-1;
+  htim2.Init.Period = 640 - 1;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
@@ -287,7 +278,6 @@ static void MX_TIM2_Init(void)
   /* USER CODE BEGIN TIM2_Init 2 */
 
   /* USER CODE END TIM2_Init 2 */
-
 }
 
 /**
@@ -322,7 +312,6 @@ static void MX_USART2_UART_Init(void)
   /* USER CODE BEGIN USART2_Init 2 */
 
   /* USER CODE END USART2_Init 2 */
-
 }
 
 /**
@@ -359,7 +348,6 @@ static void MX_GPIO_Init(void)
   /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI4_15_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(EXTI4_15_IRQn);
-
 }
 
 /* USER CODE BEGIN 4 */
@@ -378,7 +366,7 @@ void Error_Handler(void)
   /* USER CODE END Error_Handler_Debug */
 }
 
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
   *         where the assert_param error has occurred.
@@ -387,7 +375,7 @@ void Error_Handler(void)
   * @retval None
   */
 void assert_failed(uint8_t *file, uint32_t line)
-{ 
+{
   /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line number,
      tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */

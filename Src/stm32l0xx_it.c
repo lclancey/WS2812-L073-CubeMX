@@ -57,7 +57,9 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
-extern FunctionalState SendEnable;
+extern uint8_t SendEnable;
+extern uint8_t SendMode;
+extern uint8_t SendCount;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -78,7 +80,7 @@ extern TIM_HandleTypeDef htim2;
 /* USER CODE END EV */
 
 /******************************************************************************/
-/*           Cortex-M0+ Processor Interruption and Exception Handlers          */ 
+/*           Cortex-M0+ Processor Interruption and Exception Handlers          */
 /******************************************************************************/
 /**
   * @brief This function handles Non maskable Interrupt.
@@ -161,9 +163,8 @@ void SysTick_Handler(void)
 void EXTI4_15_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI4_15_IRQn 0 */
-	SendEnable = ~SendEnable; 
-  HAL_GPIO_TogglePin(LD2_GPIO_Port,LD2_Pin);
-	
+  SendMode++;
+  HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
   /* USER CODE END EXTI4_15_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_13);
   /* USER CODE BEGIN EXTI4_15_IRQn 1 */
@@ -177,9 +178,9 @@ void EXTI4_15_IRQHandler(void)
 void TIM2_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM2_IRQn 0 */
-	
-	SendEnable = ~SendEnable; 
-  HAL_GPIO_TogglePin(LD2_GPIO_Port,LD2_Pin);
+  SendCount++;
+  SendEnable = 1;
+  HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
   /* USER CODE END TIM2_IRQn 0 */
   HAL_TIM_IRQHandler(&htim2);
   /* USER CODE BEGIN TIM2_IRQn 1 */
