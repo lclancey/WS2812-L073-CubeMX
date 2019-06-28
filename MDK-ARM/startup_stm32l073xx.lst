@@ -417,10 +417,10 @@ ARM Macro Assembler    Page 7
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M0+ --apcs=inter
 work --depend=ws2812-l073-cubemx\startup_stm32l073xx.d -ows2812-l073-cubemx\sta
 rtup_stm32l073xx.o -I.\RTE\_WS2812-L073-CubeMX -IC:\Keil_v5\ARM\PACK\ARM\CMSIS\
-5.4.0\CMSIS\Core\Include -IC:\Keil_v5\ARM\PACK\Keil\STM32L0xx_DFP\2.0.0\Drivers
-\CMSIS\Device\ST\STM32L0xx\Include --predefine="__EVAL SETA 1" --predefine="__U
-VISION_VERSION SETA 526" --predefine="_RTE_ SETA 1" --predefine="STM32L073xx SE
-TA 1" --list=startup_stm32l073xx.lst startup_stm32l073xx.s
+5.5.1\CMSIS\Core\Include -IC:\Keil_v5\ARM\PACK\Keil\STM32L0xx_DFP\2.0.1\Drivers
+\CMSIS\Device\ST\STM32L0xx\Include --predefine="__UVISION_VERSION SETA 527" --p
+redefine="_RTE_ SETA 1" --predefine="STM32L073xx SETA 1" --list=startup_stm32l0
+73xx.lst startup_stm32l073xx.s
 
 
 
@@ -990,4 +990,4 @@ Symbol: __use_two_region_memory
       None
 Comment: __use_two_region_memory unused
 3 symbols
-394 symbols in table
+393 symbols in table

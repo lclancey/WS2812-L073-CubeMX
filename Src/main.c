@@ -133,7 +133,6 @@ int main(void)
   {
     if (SendEnable)
     {
-      
       if (SendMode % CC_MAX)
         //Switch to one of the seven pre-defined colors(except the CC_Black)
         //then hue single color
@@ -142,7 +141,6 @@ int main(void)
         //Switch to the first color (CC_Black)
         //then hue full color
         WS2812_HueCircle(pWCMCU24_core, SendCount);
-      
       HAL_SPI_Transmit(&hspi1, pWCMCU24_core->pData, pWCMCU24_core->dataLen, 200);
       /* USER CODE END WHILE */
 
